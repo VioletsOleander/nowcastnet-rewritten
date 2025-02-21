@@ -1,0 +1,2 @@
+# Introduction
+This project is a personal reimplementation of the NowcastNet inference framework. The original research, titled "Skilful nowcasting of extreme precipitation with NowcastNet," was published in Nature and can be accessed at https://www.nature.com/articles/s41586-023-06184-4. Additionally, the original code is available at https://doi.org/10.24433/CO.0832447.v1.
