@@ -108,7 +108,7 @@ def crop_frames(frames, case_type, crop_size=192):
         w_center = width // 2
 
         frames = frames[:, :,
-                        h_center-crop_size:h_center + crop_size,
+                        h_center-crop_size:h_center+crop_size,
                         w_center-crop_size:w_center+crop_size]
 
     return frames
