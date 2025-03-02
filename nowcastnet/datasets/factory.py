@@ -1,4 +1,4 @@
-from datasets.radar_dataset import RadarDataset
+from nowcastnet.datasets.radar_dataset import RadarDataset
 
 from argparse import Namespace
 from torch.utils.data import DataLoader

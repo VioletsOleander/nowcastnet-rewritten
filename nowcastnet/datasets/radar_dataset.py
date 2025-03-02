@@ -50,8 +50,8 @@ class RadarDataset(Dataset):
 
     def __getitem__(self, sample_idx) -> np.ndarray:
         sample = self._load_frames(sample_idx)
-        # extract the first self.input_length frames from the latest self.total_length frames
-        sample = sample[-self.total_length:][:self.input_length]
+        # extract the latest self.total_length frames
+        sample = sample[-self.total_length:]
 
         # mask = np.ones_like(sample)
         # mask[sample < 0] = 0
@@ -59,7 +59,7 @@ class RadarDataset(Dataset):
         sample = np.clip(sample, a_min=0, a_max=128)
         # sample = np.stack((sample, mask), axis=-1)
 
-        return sample
+        return sample[:self.input_length], sample[self.input_length:]
 
     def __len__(self):
         return len(self.sample_list)

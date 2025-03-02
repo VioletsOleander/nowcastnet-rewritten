@@ -1,10 +1,10 @@
 from argparse import Namespace
 
-from model.modules.evolution.evolution_network import EvolutionNetwork
-from model.modules.evolution.evolution_operator import EvolutionOperator
-from model.modules.generation.generative_encoder import GenerativeEncoder
-from model.modules.generation.generative_decoder import GenerativeDecoder
-from model.modules.generation.noise_projector import NoiseProjector
+from nowcastnet.model.modules.evolution.evolution_network import EvolutionNetwork
+from nowcastnet.model.modules.evolution.evolution_operator import EvolutionOperator
+from nowcastnet.model.modules.generation.generative_encoder import GenerativeEncoder
+from nowcastnet.model.modules.generation.generative_decoder import GenerativeDecoder
+from nowcastnet.model.modules.generation.noise_projector import NoiseProjector
 
 import torch
 import torch.nn as nn
@@ -43,7 +43,7 @@ class NowcastNet(nn.Module):
                                                           configs.image_height, configs.image_width),
                                               grid_device=configs.device)
 
-    def forward(self, frames):
+    def forward(self, frames, noise):
         # frames: [batch_size, 9, H, W]
         batch_size, n_channels, height, width = frames.shape
 
@@ -85,8 +85,6 @@ class NowcastNet(nn.Module):
 
         # Noise Projector
         # noise: [batch_size, 32, H/32, W/32]
-        noise = torch.randn(
-            batch_size, self.generator_base_channels, height//32, width//32).to(device=self.device)
         # noise_feature: [batch_size, 1024, H/32, W/32]
         noise_feature = self.proj(noise)
         # noise_feature: [batch_size, ..., 4, 4, 8, 8]

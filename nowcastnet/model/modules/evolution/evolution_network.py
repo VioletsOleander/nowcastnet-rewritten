@@ -1,4 +1,4 @@
-from model.modules.shared_modules import DoubleConv, Up, Down
+from nowcastnet.model.modules.shared_modules import DoubleConv, Up, Down
 
 import torch
 import torch.nn as nn
