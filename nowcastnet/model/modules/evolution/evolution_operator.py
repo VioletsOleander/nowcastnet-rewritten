@@ -54,8 +54,8 @@ class EvolutionOperator(nn.Module):
 
         return x
 
-    def __call__(self, x, motion_field, intensity_field,
-                 interpolation_mode='bilinear', padding_mode='zeros'):
+    def forward(self, x, motion_field, intensity_field,
+                interpolation_mode='bilinear', padding_mode='zeros'):
         x = self._flow(x, motion_field, self.coordinate_grid,
                        interpolation_mode, padding_mode)
         x = x + intensity_field

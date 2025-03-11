@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nowcastnet-rewritten"
+authors = [
+    {name = "Xinjie Chen", email = "xj-chen24@mails.tsinghua.edu.cn"},
+]
+version = "0.0.0"
+description = "A personal reimplementation of NowcastNet inference framework"
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+namespaces = false

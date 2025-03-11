@@ -4,7 +4,7 @@ import os
 
 from nowcastnet.model.nowcastnet import NowcastNet
 from nowcastnet.datasets.factory import dataset_provider
-from nowcastnet.utils.visualizing import plot_and_save, crop_frames
+from nowcastnet.utils.visualizing import plot_frames, crop_frames
 from nowcastnet.utils.parsing import setup_parser
 from nowcastnet.utils.logging import setup_logging, log_configs
 
@@ -34,6 +34,8 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
                              help='whether to save the inferenced original numpy ndarray data')
     other_group.add_argument('--path_to_log', type=str, default='inference.log',
                              help='path to store the log file')
+    other_group.add_argument('--seed', type=int, default=42,
+                             help='random seed for reproducibility')
 
     return parser
 
@@ -48,6 +50,8 @@ def prepare_configs(configs: argparse.Namespace) -> argparse.Namespace:
 def inference(model: nn.Module, dataloader: DataLoader, configs: argparse.Namespace):
     logging.info('Inference started')
 
+    np.random.seed(configs.seed)
+
     results_dir = configs.results_path
     os.makedirs(results_dir, exist_ok=True)
 
@@ -58,11 +62,17 @@ def inference(model: nn.Module, dataloader: DataLoader, configs: argparse.Namesp
         logging.info(f'Batch: {batch+1}/{len(dataloader)}')
 
         observed_frames = observed_frames.to(device=configs.device)
-        noise = torch.randn(
+        noise = np.random.randn(
             configs.batch_size,
             configs.generator_base_channels,
             configs.image_height//32,
-            configs.image_width//32).to(device=configs.device)
+            configs.image_width//32).astype(np.float32)
+        noise = torch.from_numpy(noise).to(device=configs.device)
+        # noise = torch.randn(
+        #     configs.batch_size,
+        #     configs.generator_base_channels,
+        #     configs.image_height//32,
+        #     configs.image_width//32).to(device=configs.device)
 
         with torch.no_grad():
             predicted_frames = model(observed_frames, noise)
@@ -75,10 +85,10 @@ def inference(model: nn.Module, dataloader: DataLoader, configs: argparse.Namesp
             predicted_frames = crop_frames(frames=predicted_frames,
                                            crop_size=configs.crop_size)
 
-        plot_and_save(frames=predicted_frames[0],
-                      save_dir=result_path,
-                      vmin=1,
-                      vmax=40)
+        plot_frames(frames=predicted_frames[0],
+                    save_dir=result_path,
+                    vmin=1,
+                    vmax=40)
 
         if configs.save_original_data:
             np.save(os.path.join(result_path, 'frames.npy'),

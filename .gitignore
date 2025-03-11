@@ -1,2 +1,6 @@
 __pycache__/
-/scripts/
+scripts/
+configs/
+logs/
+*.sarif
+*.egg-info/
