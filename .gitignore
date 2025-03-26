@@ -4,3 +4,4 @@ configs/
 logs/
 *.sarif
 *.egg-info/
+/dist/
