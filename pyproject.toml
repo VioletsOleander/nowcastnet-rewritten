@@ -7,9 +7,18 @@ name = "nowcastnet-rewritten"
 authors = [
     {name = "Xinjie Chen", email = "xj-chen24@mails.tsinghua.edu.cn"},
 ]
-version = "0.0.0"
+version = "0.0.1"
 description = "A personal reimplementation of NowcastNet inference framework"
 readme = "README.md"
+dependencies = [
+    "matplotlib==3.10.1",
+    "nowcastnet-rewritten==0.0.1",
+    "numpy==2.2.2",
+    "opencv-python==4.11.0.86",
+    "pysteps==1.14.0",
+    "scikit-learn==1.6.1",
+    "torch==2.6.0"
+]
 
 [tool.setuptools.packages.find]
 namespaces = false

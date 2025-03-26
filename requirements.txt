@@ -1,3 +1,4 @@
+# Those requirements are just for development
 attrs==25.1.0
 build==1.2.2.post1
 coloredlogs==15.0.1
