@@ -1,0 +1,42 @@
+# basic configs
+[common]
+dataset_name = "radar"
+input_length = 9
+total_length = 29
+cpu_workers = 0
+crop_size = 384
+batch_size = 1
+generator_base_channels = 32
+device = "cpu"
+save_original_data = true
+pred_length = 20
+gen_decoder_input_channels = 320
+weights_path = "for example: /home/nowcastnet/data/checkpoints/rewritten_model.pt"
+
+# specific configs for normal case
+[normal]
+image_height = 512
+image_width = 512
+case_type = "normal"
+dataset_path = "for example: /home/nowcastnet/data/dataset/mrms/raw/figure/"
+results_path = "for example: /home/nowcastnet/results/inference/rewritten/normal"
+path_to_log = "for example: logs/inference_normal.log"
+
+
+# specific configs for large case
+[large]
+image_height = 1024
+image_width = 1024
+case_type = "large"
+dataset_path = "for example: /home/nowcastnet/data/dataset/mrms/raw/large_figure/"
+results_path = "for example: /home/nowcastnet/results/inference/rewritten/large"
+path_to_log = "for example: logs/inference_large.log"
+
+
+[onnx_normal]
+# path to the onnx model in normal case (input image size = 512x512)
+graph_path = 'for example: /home/nowcastnet/data/checkpoints/rewritten_model_512.onnx'
+
+[onnx_large]
+# path to the onnx model in large case (input image size = 1024x1024)
+graph_path = 'for example: /home/nowcastnet/data/checkpoints/rewritten_model_1024.onnx'

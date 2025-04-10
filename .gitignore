@@ -4,10 +4,13 @@
 # dirs
 __pycache__/
 scripts/
-configs/
 logs/
 artifacts/
 *.egg-info/
 
 # files
+**/configs/*.toml
 *.sarif
+
+# not ignored
+!**/configs/*_template.toml
