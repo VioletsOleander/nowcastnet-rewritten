@@ -1,7 +1,13 @@
+# top level dir
+/dist/
+
+# dirs
 __pycache__/
 scripts/
 configs/
 logs/
-*.sarif
+artifacts/
 *.egg-info/
-/dist/
+
+# files
+*.sarif
