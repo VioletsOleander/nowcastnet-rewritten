@@ -47,12 +47,12 @@ python inference.py \
     "path_to_result" \
 ```
 
-## 4. Sample Inference Result
+## 4. Example Inference Result
+
+1024 x 1024:
 
 ![1024x1024](docs/pictures/1024x1024.png)
 
-<p style="text-align: center;"> 1024 x 1024 </p>
+512 x 512:
 
 ![512x512](docs/pictures/512x512.png)
-
-<p style="text-align: center;"> 512 x 512 </p>
