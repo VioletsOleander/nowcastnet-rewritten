@@ -1,12 +1,12 @@
 # NowcastNet-Rewritten
 
-## Introduction
+## 1. Introduction
 
 This project is a personal reimplementation of the NowcastNet inference framework. The original research, titled "Skilful nowcasting of extreme precipitation with NowcastNet," by Yuchen Zhang, Mingsheng Long et al., was published in Nature and can be accessed at https://www.nature.com/articles/s41586-023-06184-4. Additionally, the original code by Yuchen Zhang is available at https://doi.org/10.24433/CO.0832447.v1.
 
 > Q: Why reimplement? A: Just for learning :)
 
-## Getting Started
+## 2. Getting Started
 
 1. Cloning the repository:
 
@@ -14,21 +14,22 @@ This project is a personal reimplementation of the NowcastNet inference framewor
     git clone https://github.com/VioletsOleander/nowcastnet-rewritten.git
     ```
 
-2. Install the package from PyPI
+2. Install the package from PyPI:
 
     ```bash
     pip install -U nowcastnet-rewritten
     ```
 
-Note:
+**Notes:**
 
-1. You may need to implementated your own code to read the dataset. Sample Code for reading the radar dataset is provided in the `datasets` directory.
+- You may need to implement your own code to read the dataset. Sample code for reading the radar dataset is provided in the `datasets` directory.
+- To ensure compatibility with this reimplementation's architecture, weights have been modified and are available for download from [Hugging Face](https://huggingface.co/VioletsOleander/nowcastnet-rewritten).
 
-2. To ensure compatibility with this reimplementation's architecture, weights have been modified by me and are available for downloading from [Hugging Face](https://huggingface.co/VioletsOleander/nowcastnet-rewritten).
+## 3. Usage
 
-## Usage
+To start inference, run `inference.py` with required arguments. 
 
-To start inference, run `inference.py` with required arguments. To get an overview of the arguments, start with the basic command:
+To get an overview of the arguments, start with the basic command:
 
 ```bash
 python inference.py -h
@@ -45,3 +46,13 @@ python inference.py \
     "path_to_data" \
     "path_to_result" \
 ```
+
+## 4. Sample Inference Result
+
+![1024x1024](docs/pictures/1024x1024.png)
+
+<p style="text-align: center;"> 1024 x 1024 </p>
+
+![512x512](docs/pictures/512x512.png)
+
+<p style="text-align: center;"> 512 x 512 </p>
