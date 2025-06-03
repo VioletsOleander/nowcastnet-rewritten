@@ -51,8 +51,8 @@ python inference.py \
 
 1024 x 1024:
 
-![1024x1024](docs/pictures/1024x1024.png)
+![Inference output at 1024×1024 resolution](docs/pictures/1024x1024.png)
 
 512 x 512:
 
-![512x512](docs/pictures/512x512.png)
+![Inference output at 512x512 resolution](docs/pictures/512x512.png)
