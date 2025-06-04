@@ -14,7 +14,7 @@ This project is a personal reimplementation of the NowcastNet inference framewor
     git clone https://github.com/VioletsOleander/nowcastnet-rewritten.git
     ```
 
-2. Install the package from PyPI:
+2. Install the package from PyPI (**make sure `python==3.10.*`**):
 
     ```bash
     pip install -U nowcastnet-rewritten
