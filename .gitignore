@@ -13,4 +13,4 @@ artifacts/
 *.sarif
 
 # not ignored
-!**/configs/*_template.toml
+!**/configs/*.example.toml
