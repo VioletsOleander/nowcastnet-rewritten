@@ -10,7 +10,7 @@ def setup_parser(description):
         description=description,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('config_path', type=str,
-                        help='Path to the config file')
+                        help='path to the config file')
     parser.add_argument('--case_type', type=str, default='normal',
                         choices=['normal', 'large'],
                         help='different case_type corresponds to different image processing method for generated frames')

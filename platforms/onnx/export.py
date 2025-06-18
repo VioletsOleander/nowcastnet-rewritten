@@ -2,19 +2,18 @@
 
 from utils import setup_parser, load_config, construct_configs
 
-import tomlkit
 import torch
 from torch.export.dynamic_shapes import Dim
 from nowcastnet.model.nowcastnet import NowcastNet
 
 
 def refine_parser(parser):
-    parser.add_argument('--output_name', type=str, default='rewritten_model',
-                        help='Name of the output ONNX graph')
+    parser.add_argument('--output_name', type=str, default='nowcastnet',
+                        help='name of the output ONNX graph')
     parser.add_argument('--dynamic', action='store_true',
-                        help='Enable dynamic shape exporting')
+                        help='enable dynamic shape exporting')
     parser.add_argument('--artifacts_dir', type=str, default='artifacts',
-                        help='Directory to save the artifacts, like reports and the serialized exported program')
+                        help='directory to save the artifacts, like reports and the serialized exported program')
 
     return parser
 
@@ -29,6 +28,7 @@ def prepare_kwargs(configs, args):
         'optimize': True,
         'verify': True,
         'profile': True,
+        'dump_exported_program': True,
         'artifacts_dir': args.artifacts_dir
     }
     if not args.dynamic:
