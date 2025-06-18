@@ -9,11 +9,11 @@ from nowcastnet.model.nowcastnet import NowcastNet
 
 def refine_parser(parser):
     parser.add_argument('--output_name', type=str, default='nowcastnet',
-                        help='name of the output ONNX graph')
+                        help='Name of the output ONNX graph')
     parser.add_argument('--dynamic', action='store_true',
-                        help='enable dynamic shape exporting')
+                        help='Enable dynamic shape exporting')
     parser.add_argument('--artifacts_dir', type=str, default='artifacts',
-                        help='directory to save the artifacts, like reports and the serialized exported program')
+                        help='Directory to save the artifacts, like reports and the serialized exported program')
 
     return parser
 
