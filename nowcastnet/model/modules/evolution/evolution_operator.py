@@ -51,9 +51,10 @@ class EvolutionOperator(nn.Module):
             (normalized_width_grid, normalized_height_grid), dim=1)
 
         # [B, 2, H, W] -> [B, H, W, 2]
-        coordinate_gird = normalized_coordinate_grid.permute(0, 2, 3, 1)
+        normalized_coordinate_grid = normalized_coordinate_grid.permute(
+            0, 2, 3, 1)
 
-        x = F.grid_sample(input=x, grid=coordinate_gird,
+        x = F.grid_sample(input=x, grid=normalized_coordinate_grid,
                           mode=interpolation_mode, padding_mode=padding_mode, align_corners=True)
 
         return x
