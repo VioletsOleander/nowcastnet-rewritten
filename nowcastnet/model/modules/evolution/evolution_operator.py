@@ -41,15 +41,20 @@ class EvolutionOperator(nn.Module):
         coordinate_grid = coordinate_grid + motion_field
 
         # normalize horizontal coordinates values from [0, width-1] to [-1, 1]
-        coordinate_grid[:, 0, :, :] = self._normalize_coordinates(
+        normalized_width_grid = self._normalize_coordinates(
             coordinate_grid[:, 0, :, :], width)
         # normalize vertical coordinates values from [0, height-1] to [-1, 1]
-        coordinate_grid[:, 1, :, :] = self._normalize_coordinates(
+        normalized_height_grid = self._normalize_coordinates(
             coordinate_grid[:, 1, :, :], height)
-        # [B, 2, H, W] -> [B, H, W, 2]
-        coordinate_gird = coordinate_grid.permute(0, 2, 3, 1)
+        # concatenate normalized coordinates
+        normalized_coordinate_grid = torch.stack(
+            (normalized_width_grid, normalized_height_grid), dim=1)
 
-        x = F.grid_sample(input=x, grid=coordinate_gird,
+        # [B, 2, H, W] -> [B, H, W, 2]
+        normalized_coordinate_grid = normalized_coordinate_grid.permute(
+            0, 2, 3, 1)
+
+        x = F.grid_sample(input=x, grid=normalized_coordinate_grid,
                           mode=interpolation_mode, padding_mode=padding_mode, align_corners=True)
 
         return x
