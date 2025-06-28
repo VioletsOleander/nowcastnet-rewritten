@@ -24,7 +24,7 @@ This project is a personal reimplementation of the NowcastNet inference framewor
 
 - You may need to implement your own code to read the dataset. Sample code for reading the radar dataset is provided in the `datasets` directory.
 - To ensure compatibility with this reimplementation's architecture, weights have been modified and are available for download from [Hugging Face](https://huggingface.co/VioletsOleander/nowcastnet-rewritten).
-- The `platform` directory for exploring model deployment on different platforms (so you can just ignore it :p). The `nowcastnet` directory contains all the code for basic inference in PyTorch.
+- The `platforms` directory contains code for exploring model deployment on different platforms (so you can just ignore it :p). The `nowcastnet` directory contains all the code for basic inference in PyTorch.
 
 ## 3. Usage
 
