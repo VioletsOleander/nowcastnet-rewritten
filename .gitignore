@@ -1,5 +1,6 @@
 # top level dir
 /dist/
+/node_modules/
 
 # dirs
 __pycache__/
@@ -11,6 +12,7 @@ artifacts/
 # files
 **/configs/*.toml
 *.sarif
+*.json
 
 # not ignored
 !**/configs/*.example.toml
