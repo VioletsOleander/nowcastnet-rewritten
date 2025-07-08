@@ -1,16 +1,16 @@
 """Do ONNX model Inference."""
 
-import logging
 import os
+import logging
 
-from utils import setup_parser, load_config, construct_configs
-
-import onnxruntime as ort
 import numpy as np
+import onnxruntime as ort
 from torch.utils.data import DataLoader
 from nowcastnet.utils.logging import setup_logging, log_configs
 from nowcastnet.utils.visualizing import crop_frames, plot_frames
 from nowcastnet.datasets.factory import dataset_provider
+
+from utils import setup_parser, load_config, construct_configs
 
 
 def inference(sess: ort.InferenceSession, dataloader: DataLoader, configs):

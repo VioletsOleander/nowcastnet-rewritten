@@ -1,7 +1,7 @@
-from nowcastnet.model.modules.shared_modules import DoubleConv, Up, Down
-
 import torch
 import torch.nn as nn
+
+from nowcastnet.model.modules.shared_modules import DoubleConv, Up, Down
 
 
 # 1x1 Conv

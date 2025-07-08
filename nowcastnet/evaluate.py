@@ -1,6 +1,9 @@
+import os
 import argparse
 import logging
-import os
+
+import numpy as np
+from matplotlib.colors import Normalize
 
 from nowcastnet.datasets.factory import dataset_provider
 from nowcastnet.utils.parsing import setup_parser
@@ -8,9 +11,6 @@ from nowcastnet.utils.logging import setup_logging, log_configs
 from nowcastnet.utils.preprocessing import preprocess
 from nowcastnet.utils.visualizing import crop_frames, plot_line
 from nowcastnet.evaluation.metrics import compute_csi, compute_csi_neighbor, compute_psd
-
-import numpy as np
-from matplotlib.colors import Normalize
 
 
 def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:

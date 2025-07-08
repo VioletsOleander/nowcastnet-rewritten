@@ -2,10 +2,10 @@ import argparse
 import logging
 import os
 
-from nowcastnet.utils.visualizing import crop_frames, plot_frames
-
 import numpy as np
 from torch.utils.data import DataLoader
+
+from nowcastnet.utils.visualizing import crop_frames, plot_frames
 
 
 def preprocess(dataloader: DataLoader, configs: argparse.Namespace):

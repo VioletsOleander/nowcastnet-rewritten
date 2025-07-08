@@ -1,7 +1,7 @@
 """Replace MatMul (matrix by vector, vector by vector) with Unsqueeze + MatMul + Squeeze in ONNX model."""
 
-import argparse
 import os
+import argparse
 
 import onnx
 import numpy as np

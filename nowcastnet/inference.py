@@ -1,17 +1,17 @@
+import os
 import argparse
 import logging
-import os
+
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+import numpy as np
 
 from nowcastnet.model.nowcastnet import NowcastNet
 from nowcastnet.datasets.factory import dataset_provider
 from nowcastnet.utils.visualizing import plot_frames, crop_frames
 from nowcastnet.utils.parsing import setup_parser
 from nowcastnet.utils.logging import setup_logging, log_configs
-
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
-import numpy as np
 
 
 def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:

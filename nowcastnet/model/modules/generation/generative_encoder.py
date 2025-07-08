@@ -1,6 +1,6 @@
-from nowcastnet.model.modules.shared_modules import DoubleConv, Down
-
 import torch.nn as nn
+
+from nowcastnet.model.modules.shared_modules import DoubleConv, Down
 
 
 class GenerativeEncoder(nn.Module):
