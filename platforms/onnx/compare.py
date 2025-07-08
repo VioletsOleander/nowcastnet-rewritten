@@ -2,10 +2,10 @@
 
 import os
 
-from utils import setup_parser, load_config, construct_configs
-
 import matplotlib.pyplot as plt
 import numpy as np
+
+from utils import setup_parser, load_config, construct_configs
 
 
 def plot_lines(x,  y1, y2, title, x_label, y_label, x_ticks, y_ticks, save_dir) -> None:

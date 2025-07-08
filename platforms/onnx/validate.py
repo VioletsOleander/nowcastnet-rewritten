@@ -2,12 +2,12 @@
 
 import re
 
-from utils import setup_parser, load_config, construct_configs
-
 import torch
 import numpy as np
 import onnxruntime
 from nowcastnet.model.nowcastnet import NowcastNet
+
+from utils import setup_parser, load_config, construct_configs
 
 
 def refine_parser(parser):

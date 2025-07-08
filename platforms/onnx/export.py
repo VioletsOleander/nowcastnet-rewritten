@@ -1,10 +1,10 @@
 """Export NowcastNet from torch.nn.Module to ONNX graph."""
 
-from utils import setup_parser, load_config, construct_configs
-
 import torch
 from torch.export.dynamic_shapes import Dim
 from nowcastnet.model.nowcastnet import NowcastNet
+
+from utils import setup_parser, load_config, construct_configs
 
 
 def refine_parser(parser):
