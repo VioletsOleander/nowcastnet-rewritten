@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nowcastnet-rewritten"
 authors = [{ name = "Xinjie Chen", email = "1377232072@qq.com" }]
-version = "0.0.2-patch1"
+version = "0.0.2.post1"
 description = "A personal reimplementation of NowcastNet inference framework"
 readme = "README.md"
 dependencies = [
