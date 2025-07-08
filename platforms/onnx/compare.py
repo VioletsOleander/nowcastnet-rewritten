@@ -2,8 +2,8 @@
 
 import os
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 from utils import setup_parser, load_config, construct_configs
 
