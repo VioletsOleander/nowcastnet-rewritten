@@ -20,6 +20,12 @@ This project is a personal reimplementation of the NowcastNet inference framewor
     pip install -U nowcastnet-rewritten
     ```
 
+    or install from local:
+
+    ```bash
+    pip install .
+    ```
+
 **Notes:**
 
 - You may need to implement your own code to read the dataset. Sample code for reading the radar dataset is provided in the `datasets` directory.

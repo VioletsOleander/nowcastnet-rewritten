@@ -1,11 +1,11 @@
 [build-system]
-requires = ["setuptools"]
+requires      = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "nowcastnet-rewritten"
 authors = [{ name = "Xinjie Chen", email = "1377232072@qq.com" }]
-version = "0.0.2"
+version = "0.0.3"
 description = "A personal reimplementation of NowcastNet inference framework"
 readme = "README.md"
 dependencies = [
@@ -15,11 +15,14 @@ dependencies = [
     "opencv-python>=4.11.0.86",
     "pysteps>=1.14.0",
     "scikit-learn>=1.6.1",
-    "torch==2.6.0",
+    "torch>=2.6.0",
     "tomlkit>=0.13.2",
 ]
-requires-python = "==3.10"
+requires-python = ">=3.10,<3.11"
 license = "MIT"
+
+[project.optional-dependencies]
+full = ["onnx>=1.18.0", "onnxruntime>=1.22.0"]
 
 [tool.setuptools.packages.find]
 namespaces = false
