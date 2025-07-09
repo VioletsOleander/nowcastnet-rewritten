@@ -142,12 +142,12 @@ def print_model_info(model_info: dict, verbose=False):
         print(f"  Description: {basic['doc_string']}")
 
     # Opset Information
-    print(f"\nOPSET VERSIONS:")
+    print("\nOPSET VERSIONS:")
     for opset in model_info['opset_imports']:
         print(f"  {opset}")
 
     # Model Structure
-    print(f"\nMODEL STRUCTURE:")
+    print("\nMODEL STRUCTURE:")
     print(f"  Total Nodes: {model_info['total_nodes']}")
     print(f"  Total Parameters: {model_info['total_parameters']:,}")
     print(f"  Initializers: {len(model_info['initializers'])}")
@@ -165,13 +165,13 @@ def print_model_info(model_info: dict, verbose=False):
         print(f"  {out['name']}: {out['dtype']}[{shape_str}]")
 
     # Operator Statistics
-    print(f"\nOPERATOR STATISTICS:")
+    print("\nOPERATOR STATISTICS:")
     for op, count in sorted(model_info['operators'].items()):
         print(f"  {op}: {count}")
 
     # Initializers (parameters)
     if model_info['initializers']:
-        print(f"\nLARGEST PARAMETERS:")
+        print("\nLARGEST PARAMETERS:")
         sorted_inits = sorted(model_info['initializers'],
                               key=lambda x: x['size'], reverse=True)[:10]
         for init in sorted_inits:
@@ -182,7 +182,7 @@ def print_model_info(model_info: dict, verbose=False):
 
     # Detailed node information
     if verbose and model_info['nodes']:
-        print(f"\nDETAILED NODE INFORMATION:")
+        print("\nDETAILED NODE INFORMATION:")
         for node in model_info['nodes'][:20]:  # Show first 20 nodes
             print(f"  [{node['index']}] {node['op_type']} ({node['name']})")
             print(f"    Inputs: {node['inputs']}")

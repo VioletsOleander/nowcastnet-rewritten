@@ -1,5 +1,4 @@
 import argparse
-from tkinter.filedialog import Directory
 from types import SimpleNamespace
 
 import tomlkit

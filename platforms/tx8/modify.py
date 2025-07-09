@@ -5,7 +5,7 @@ import os
 
 import onnx
 import numpy as np
-from onnx import helper, numpy_helper, TensorProto
+from onnx import helper, numpy_helper
 
 
 def setup_parser():
@@ -412,7 +412,7 @@ def modify_model(model_path, output_path, dry_run=False, verbose=False):
     # Save the modified model
     onnx.save(model, output_path)
 
-    print(f"\n🎉 Model modification completed:")
+    print("\n🎉 Model modification completed:")
     print(f"  - Replaced {nodes_replaced} MatMul operations")
     print(f"  - Added {total_initializers_added} new initializers")
     print(f"  - Total nodes: {len(model.graph.node)}")
