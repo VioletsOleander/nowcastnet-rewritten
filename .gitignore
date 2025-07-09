@@ -1,9 +1,12 @@
 # top level dir
 /dist/
 /node_modules/
+/data/
+/build/
 
 # dirs
 __pycache__/
+.ruff_cache/
 scripts/
 logs/
 artifacts/
