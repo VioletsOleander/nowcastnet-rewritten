@@ -16,8 +16,7 @@ def compute_csi(truth_field: np.ndarray, predicted_field: np.ndarray, threshold)
     predicted_field = np.where(predicted_field >= threshold, 1, 0)
     truth_field = np.where(truth_field >= threshold, 1, 0)
 
-    matrix = contingency_matrix(
-        truth_field.flatten(), predicted_field.flatten())
+    matrix = contingency_matrix(truth_field.flatten(), predicted_field.flatten())
 
     hits = safe_access(matrix, 1, 1)
     misses = safe_access(matrix, 1, 0)
@@ -28,8 +27,10 @@ def compute_csi(truth_field: np.ndarray, predicted_field: np.ndarray, threshold)
     return csi
 
 
-def compute_csi_neighbor(truth_field: np.ndarray, predicted_field: np.ndarray, threshold, kernel_size=2):
-    max_pool = MaxPool2d(kernel_size=kernel_size, stride=kernel_size//2)
+def compute_csi_neighbor(
+    truth_field: np.ndarray, predicted_field: np.ndarray, threshold, kernel_size=2
+):
+    max_pool = MaxPool2d(kernel_size=kernel_size, stride=kernel_size // 2)
 
     truth_field = torch.from_numpy(truth_field)
     predicted_field = torch.from_numpy(predicted_field)

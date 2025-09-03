@@ -9,14 +9,16 @@ class ProjBlock(nn.Module):
         super().__init__()
 
         self.one_conv = spectral_norm(
-            nn.Conv2d(in_channels, out_channels - in_channels,
-                      kernel_size=1, padding=0))
+            nn.Conv2d(in_channels, out_channels - in_channels, kernel_size=1, padding=0)
+        )
         self.double_conv = nn.Sequential(
-            spectral_norm(nn.Conv2d(in_channels, out_channels,
-                                    kernel_size=3, padding=1)),
+            spectral_norm(
+                nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
+            ),
             nn.ReLU(),
-            spectral_norm(nn.Conv2d(out_channels, out_channels,
-                                    kernel_size=3, padding=1))
+            spectral_norm(
+                nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1)
+            ),
         )
 
     def forward(self, x):
@@ -37,7 +39,8 @@ class NoiseProjector(nn.Module):
         self.in_channels = in_channels  # 32
 
         self.conv_first = spectral_norm(
-            nn.Conv2d(in_channels, in_channels * 2, kernel_size=3, padding=1))
+            nn.Conv2d(in_channels, in_channels * 2, kernel_size=3, padding=1)
+        )
         self.L1 = ProjBlock(in_channels * 2, in_channels * 4)
         self.L2 = ProjBlock(in_channels * 4, in_channels * 8)
         self.L3 = ProjBlock(in_channels * 8, in_channels * 16)

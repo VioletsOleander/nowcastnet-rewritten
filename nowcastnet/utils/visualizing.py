@@ -4,7 +4,7 @@ import torch
 import matplotlib.pyplot as plt
 
 
-def plot_frames(frames: torch.Tensor, save_dir, vmin, vmax, cmap='viridis'):
+def plot_frames(frames: torch.Tensor, save_dir, vmin, vmax, cmap="viridis"):
     for frame_idx, frame in enumerate(frames):
         fig = plt.figure()
         ax = plt.axes()
@@ -17,7 +17,7 @@ def plot_frames(frames: torch.Tensor, save_dir, vmin, vmax, cmap='viridis'):
 
         ax.imshow(frame, alpha=alpha, vmin=vmin, vmax=vmax, cmap=cmap)
 
-        plt.savefig(os.path.join(save_dir, f'frame-{frame_idx}.png'), dpi=300)
+        plt.savefig(os.path.join(save_dir, f"frame-{frame_idx}.png"), dpi=300)
         plt.close()
 
 
@@ -32,15 +32,16 @@ def crop_frames(frames: torch.Tensor, crop_size):
     h_center = height // 2
     w_center = width // 2
 
-    frames = frames[...,
-                    h_center-crop_length:h_center+crop_length,
-                    w_center-crop_length:w_center+crop_length]
+    frames = frames[
+        ...,
+        h_center - crop_length : h_center + crop_length,
+        w_center - crop_length : w_center + crop_length,
+    ]
 
     return frames
 
 
-def plot_line(x, y,  x_ticks, y_ticks,
-              x_label, y_label, title, save_dir, image_name):
+def plot_line(x, y, x_ticks, y_ticks, x_label, y_label, title, save_dir, image_name):
     fig = plt.figure()
     ax = plt.axes()
 
