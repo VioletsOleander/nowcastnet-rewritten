@@ -24,24 +24,32 @@ class NowcastNet(nn.Module):
             in_channels=configs.input_length,
             n_classes=configs.pred_length,
             base_channels=32,
-            bilinear=True)
+            bilinear=True,
+        )
 
         self.gen_enc = GenerativeEncoder(
             in_channels=configs.total_length,
-            base_channels=configs.generator_base_channels)
+            base_channels=configs.generator_base_channels,
+        )
 
         self.gen_dec = GenerativeDecoder(
             in_channels=configs.gen_decoder_input_channels,
             base_channels=configs.generator_base_channels,
             evo_channels=configs.pred_length,
-            out_channels=configs.pred_length)
+            out_channels=configs.pred_length,
+        )
 
-        self.proj = NoiseProjector(
-            in_channels=configs.generator_base_channels)
+        self.proj = NoiseProjector(in_channels=configs.generator_base_channels)
 
-        self.evo_operator = EvolutionOperator(grid_shape=(configs.batch_size, 1,
-                                                          configs.image_height, configs.image_width),
-                                              grid_device=configs.device)
+        self.evo_operator = EvolutionOperator(
+            grid_shape=(
+                configs.batch_size,
+                1,
+                configs.image_height,
+                configs.image_width,
+            ),
+            grid_device=configs.device,
+        )
 
     def forward(self, frames, noise):
         # frames: [batch_size, 9, H, W]
@@ -54,15 +62,17 @@ class NowcastNet(nn.Module):
 
         # intensity_field: [batch_size, 20, 1, H, W]
         intensity_field = intensity_field.reshape(
-            batch_size, self.pred_length, 1, height, width)
+            batch_size, self.pred_length, 1, height, width
+        )
         # motion_field: [batch_size, 20, 2, H, W]
         motion_field = motion_field.reshape(
-            batch_size, self.pred_length, 2, height, width)
+            batch_size, self.pred_length, 2, height, width
+        )
 
         # Evolution Operator
         evolved_frames = []
         # latest_frame: [batch_size, 1, H, W]
-        latest_frame = frames[:, self.input_length-1:self.input_length, :, :]
+        latest_frame = frames[:, self.input_length - 1 : self.input_length, :, :]
         for i in range(self.pred_length):
             latest_frame = self.evo_operator(
                 x=latest_frame,
@@ -70,8 +80,9 @@ class NowcastNet(nn.Module):
                 motion_field=motion_field[:, i, :, :, :],
                 # [batch_size, 1, H, W]
                 intensity_field=intensity_field[:, i, :, :, :],
-                interpolation_mode='nearest',
-                padding_mode='border')
+                interpolation_mode="nearest",
+                padding_mode="border",
+            )
             evolved_frames.append(latest_frame)
         # evolved_frames: [batch_size, 20, H, W]
         evolved_frames = torch.cat(evolved_frames, dim=1) / 128
@@ -92,8 +103,7 @@ class NowcastNet(nn.Module):
         # noise_feature: [batch_size, ..., 8, 8, 4, 4]
         noise_feature = noise_feature.permute(0, 1, 4, 5, 2, 3)
         # noise_feature: [batch_size, 1024/16=64, H/8, W/8]
-        noise_feature = noise_feature.reshape(
-            batch_size, -1, height//8, width//8)
+        noise_feature = noise_feature.reshape(batch_size, -1, height // 8, width // 8)
 
         # Nowcast Decoder
         # concated_feature: [batch_size, 256+64=320, H/8, W/8]

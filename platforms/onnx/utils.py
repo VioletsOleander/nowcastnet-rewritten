@@ -6,19 +6,22 @@ import tomlkit
 
 def setup_parser(description):
     parser = argparse.ArgumentParser(
-        description=description,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('config_path', type=str,
-                        help='Path to the config file')
-    parser.add_argument('--case_type', type=str, default='normal',
-                        choices=['normal', 'large'],
-                        help='Different case_type corresponds to different image processing methods for generated frames.')
+        description=description, formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument("config_path", type=str, help="Path to the config file")
+    parser.add_argument(
+        "--case_type",
+        type=str,
+        default="normal",
+        choices=["normal", "large"],
+        help="Different case_type corresponds to different image processing methods for generated frames.",
+    )
 
     return parser
 
 
 def load_config(config_path: str):
-    with open(config_path, 'r', encoding='utf-8') as f:
+    with open(config_path, "r", encoding="utf-8") as f:
         configs = tomlkit.load(f)
 
     return configs

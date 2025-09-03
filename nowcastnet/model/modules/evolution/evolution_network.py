@@ -39,35 +39,18 @@ class EvolutionNetwork(nn.Module):
         self.down4 = Down(base_channels * 8, base_channels * 16 // factor)
 
         # Intensity Decoder
-        self.up1 = Up(base_channels * 16,
-                      base_channels * 8 // factor,
-                      bilinear)
-        self.up2 = Up(base_channels * 8,
-                      base_channels * 4 // factor,
-                      bilinear)
-        self.up3 = Up(base_channels * 4,
-                      base_channels * 2 // factor,
-                      bilinear)
-        self.up4 = Up(base_channels * 2,
-                      base_channels * 1,
-                      bilinear)
+        self.up1 = Up(base_channels * 16, base_channels * 8 // factor, bilinear)
+        self.up2 = Up(base_channels * 8, base_channels * 4 // factor, bilinear)
+        self.up3 = Up(base_channels * 4, base_channels * 2 // factor, bilinear)
+        self.up4 = Up(base_channels * 2, base_channels * 1, bilinear)
         self.outc = OutConv(base_channels * 1, n_classes)
-        self.gamma = nn.Parameter(torch.zeros(
-            1, n_classes, 1, 1), requires_grad=True)
+        self.gamma = nn.Parameter(torch.zeros(1, n_classes, 1, 1), requires_grad=True)
 
         # Motion Decoder
-        self.up1_v = Up(base_channels * 16,
-                        base_channels * 8 // factor,
-                        bilinear)
-        self.up2_v = Up(base_channels * 8,
-                        base_channels * 4 // factor,
-                        bilinear)
-        self.up3_v = Up(base_channels * 4,
-                        base_channels * 2 // factor,
-                        bilinear)
-        self.up4_v = Up(base_channels * 2,
-                        base_channels * 1,
-                        bilinear)
+        self.up1_v = Up(base_channels * 16, base_channels * 8 // factor, bilinear)
+        self.up2_v = Up(base_channels * 8, base_channels * 4 // factor, bilinear)
+        self.up3_v = Up(base_channels * 4, base_channels * 2 // factor, bilinear)
+        self.up4_v = Up(base_channels * 2, base_channels * 1, bilinear)
         self.outc_v = OutConv(base_channels * 1, n_classes * 2)
 
     def forward(self, x):

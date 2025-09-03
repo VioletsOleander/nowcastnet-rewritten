@@ -8,8 +8,14 @@ from torch.nn.utils.parametrizations import spectral_norm
 def conv_block(in_channels, out_channels, kernel_size):
     return nn.Sequential(
         nn.BatchNorm2d(num_features=in_channels),
-        spectral_norm(nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-                                kernel_size=kernel_size, padding=kernel_size//2))
+        spectral_norm(
+            nn.Conv2d(
+                in_channels=in_channels,
+                out_channels=out_channels,
+                kernel_size=kernel_size,
+                padding=kernel_size // 2,
+            )
+        ),
     )
 
 
@@ -18,8 +24,14 @@ def conv_relu_block(in_channels, out_channels, kernel_size):
     return nn.Sequential(
         nn.BatchNorm2d(num_features=in_channels),
         nn.ReLU(inplace=True),
-        spectral_norm(nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-                      kernel_size=kernel_size, padding=kernel_size//2))
+        spectral_norm(
+            nn.Conv2d(
+                in_channels=in_channels,
+                out_channels=out_channels,
+                kernel_size=kernel_size,
+                padding=kernel_size // 2,
+            )
+        ),
     )
 
 
@@ -51,7 +63,7 @@ class Down(nn.Module):
 
         self.maxpool_conv = nn.Sequential(
             nn.MaxPool2d(kernel_size=2),
-            DoubleConv(in_channels, out_channels, kernel_size)
+            DoubleConv(in_channels, out_channels, kernel_size),
         )
 
     def forward(self, x):
@@ -67,14 +79,15 @@ class Up(nn.Module):
 
         if bilinear:
             # bilinear interpolation upsampling
-            self.up = nn.Upsample(
-                scale_factor=2, mode='bilinear', align_corners=True)
+            self.up = nn.Upsample(scale_factor=2, mode="bilinear", align_corners=True)
             self.conv = DoubleConv(
-                in_channels, out_channels, kernel_size, in_channels//2)
+                in_channels, out_channels, kernel_size, in_channels // 2
+            )
         else:
             # transposed convolution upsampling
             self.up = nn.ConvTranspose2d(
-                in_channels, in_channels//2, kernel_size=2, stride=2)
+                in_channels, in_channels // 2, kernel_size=2, stride=2
+            )
             self.conv = DoubleConv(in_channels, out_channels, kernel_size)
 
     def forward(self, x1, x2):
@@ -83,8 +96,9 @@ class Up(nn.Module):
         # padding if necessary
         diff_y = x2.shape[2] - x1.shape[2]
         diff_x = x2.shape[3] - x1.shape[3]
-        x1 = F.pad(x1, (diff_x//2, diff_x - diff_x//2,
-                        diff_y//2, diff_y - diff_y//2))
+        x1 = F.pad(
+            x1, (diff_x // 2, diff_x - diff_x // 2, diff_y // 2, diff_y - diff_y // 2)
+        )
 
         x = torch.cat((x2, x1), dim=1)
         x = self.conv(x)
