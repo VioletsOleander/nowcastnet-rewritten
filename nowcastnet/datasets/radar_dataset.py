@@ -43,9 +43,7 @@ class RadarDataset(Dataset):
         frame_paths = self.sample_list[sample_idx]
         # load revelent frames for this sample
         for frame_path in frame_paths:
-            frame = cv.imread(frame_path, cv.IMREAD_UNCHANGED)
-            if frame is None:
-                raise ValueError(f"Failed to load frame from {frame_path}")
+                raise ValueError(f"Failed to load frame from {frame_path}. Check if the file exists and is a valid image format.")
             frames.append(np.expand_dims(frame, axis=0))
         sample = np.concatenate(frames, axis=0).astype(self.input_data_type) / 10 - 3
 
