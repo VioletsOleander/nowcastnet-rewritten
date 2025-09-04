@@ -1,17 +1,17 @@
 import os
 
-import torch
 import matplotlib.pyplot as plt
+import torch
 
 
 def plot_frames(frames: torch.Tensor, save_dir, vmin, vmax, cmap="viridis"):
     for frame_idx, frame in enumerate(frames):
-        fig = plt.figure()
+        _ = plt.figure()
         ax = plt.axes()
 
         ax.set_axis_off()
 
-        alpha = frame.copy()
+        alpha = frame.clone()
         alpha[alpha < 1] = 0
         alpha[alpha > 1] = 1
 
@@ -42,7 +42,7 @@ def crop_frames(frames: torch.Tensor, crop_size):
 
 
 def plot_line(x, y, x_ticks, y_ticks, x_label, y_label, title, save_dir, image_name):
-    fig = plt.figure()
+    _ = plt.figure()
     ax = plt.axes()
 
     ax.plot(x, y)

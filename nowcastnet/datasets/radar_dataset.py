@@ -1,7 +1,7 @@
 import os
 
-import numpy as np
 import cv2 as cv
+import numpy as np
 from torch.utils.data import Dataset
 
 
@@ -43,7 +43,9 @@ class RadarDataset(Dataset):
         frame_paths = self.sample_list[sample_idx]
         # load revelent frames for this sample
         for frame_path in frame_paths:
-            frame: np.ndarray = cv.imread(frame_path, cv.IMREAD_UNCHANGED)
+            frame = cv.imread(frame_path, cv.IMREAD_UNCHANGED)
+            if frame is None:
+                raise ValueError(f"Failed to load frame from {frame_path}")
             frames.append(np.expand_dims(frame, axis=0))
         sample = np.concatenate(frames, axis=0).astype(self.input_data_type) / 10 - 3
 
@@ -53,7 +55,7 @@ class RadarDataset(Dataset):
 
         return sample
 
-    def __getitem__(self, sample_idx) -> np.ndarray:
+    def __getitem__(self, sample_idx) -> tuple[np.ndarray, np.ndarray]:
         sample = self._load_frames(sample_idx)
         # extract the latest self.total_length frames
         sample = sample[-self.total_length :]
