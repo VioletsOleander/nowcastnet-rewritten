@@ -1,0 +1,39 @@
+name: uv-workflow
+on: [pull_request, push]
+jobs:
+  setup-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .venv
+            ~/.cache/uv
+          # 生成缓存 key 的依据：锁定文件内容 + Python 版本
+          # 当 pyproject.toml 或 uv.lock 变化时，会创建新的缓存
+          key: ${{ runner.os }}-uv-${{ hashFiles('uv.lock') }}-${{ hashFiles('.python-version') }}
+          # 如果找不到精确匹配的 key，则使用最近恢复的缓存
+          restore-keys: |
+            ${{ runner.os }}-uv-
+      
+      - name: Install the project
+        run: uv sync --locked
+      
+      - name: Run ruff
+        run: uvx ruff check
+
+      - name: Run ty
+        run: uvx ty check
