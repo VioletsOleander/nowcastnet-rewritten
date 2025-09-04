@@ -1,0 +1,51 @@
+name: commit-lint-workflow
+
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install commitlint
+        run: npm install -D @commitlint/cli @commitlint/config-conventional
+      - name: Print versions
+        run: |
+          git --version
+          node --version
+          npm --version
+          npx commitlint --version
+
+      # Only check commits pushed to the main branch
+      - name: Validate commits pushed to main
+        run: |
+          # Get all commits introduced by this push
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+          # Initial push to repository, check all commits
+          echo "Initial push to repository, checking all commits"
+          npx commitlint --from HEAD --verbose --extends @commitlint/config-conventional
+          else
+          # Check all new commits from previous to current commit
+          echo "Checking commits from ${{ github.event.before }} to ${{ github.event.after }}"
+          npx commitlint --from ${{ github.event.before }} --to ${{ github.event.after }} --verbose --extends @commitlint/config-conventional
+          fi

@@ -1,16 +1,22 @@
 name: uv-workflow
-on: pull_request
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
 jobs:
   setup-and-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version-file: ".python-version"
-      
+
       - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
@@ -28,10 +34,10 @@ jobs:
           # If an exact key match is not found, the most recently restored cache will be used
           restore-keys: |
             ${{ runner.os }}-uv-
-      
+
       - name: Install the project
         run: uv sync --locked
-      
+
       - name: Run ruff
         run: uvx ruff check
 
