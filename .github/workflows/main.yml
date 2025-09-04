@@ -1,0 +1,40 @@
+name: commit-lint-workflow
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+      - name: Install commitlint
+        run: npm install -D @commitlint/cli @commitlint/config-conventional
+      - name: Print versions
+        run: |
+          git --version
+          node --version
+          npm --version
+          npx commitlint --version
+
+      # 只检查推送到 main 分支的提交
+      - name: Validate commits pushed to main
+        run: |
+          # 获取本次推送引入的所有提交
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            # 初始推送，检查所有提交
+            echo "Initial push to repository, checking all commits"
+            npx commitlint --from HEAD --verbose
+          else
+            # 检查从之前提交到当前提交的所有新提交
+            echo "Checking commits from ${{ github.event.before }} to ${{ github.event.after }}"
+            npx commitlint --from ${{ github.event.before }} --to ${{ github.event.after }} --verbose
+          fi
