@@ -1,3 +1,0 @@
-onnx_eval_results_path = 'the directory to save the onnx model evaluation results'
-torch_eval_results_path = 'the directory to save the torch model evaluation results'
-save_dir = 'the directory to save the comparison results between onnx and torch model'
