@@ -1,8 +1,8 @@
 import numpy as np
 import torch
-from torch.nn import MaxPool2d
-from sklearn.metrics.cluster import contingency_matrix
 from pysteps.utils.spectral import rapsd
+from sklearn.metrics.cluster import contingency_matrix
+from torch.nn import MaxPool2d
 
 
 def safe_access(matrix, row, col, default=0):
@@ -32,11 +32,11 @@ def compute_csi_neighbor(
 ):
     max_pool = MaxPool2d(kernel_size=kernel_size, stride=kernel_size // 2)
 
-    truth_field = torch.from_numpy(truth_field)
-    predicted_field = torch.from_numpy(predicted_field)
+    truth_field_tensor = torch.from_numpy(truth_field)
+    predicted_field_tensor = torch.from_numpy(predicted_field)
 
-    truth_field = max_pool(truth_field.unsqueeze(0)).numpy()[0]
-    predicted_field = max_pool(predicted_field.unsqueeze(0)).numpy()[0]
+    truth_field = max_pool(truth_field_tensor.unsqueeze(0)).numpy()[0]
+    predicted_field = max_pool(predicted_field_tensor.unsqueeze(0)).numpy()[0]
 
     return compute_csi(truth_field, predicted_field, threshold)
 
