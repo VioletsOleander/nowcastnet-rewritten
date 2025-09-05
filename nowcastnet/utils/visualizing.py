@@ -1,10 +1,12 @@
 import os
 
 import matplotlib.pyplot as plt
-import torch
+import numpy as np
 
 
-def plot_frames(frames: torch.Tensor, save_dir, vmin, vmax, cmap="viridis"):
+def plot_frames(
+    frames: np.ndarray, save_dir: str, vmin: float, vmax: float, cmap="viridis"
+):
     for frame_idx, frame in enumerate(frames):
         _ = plt.figure()
         ax = plt.axes()
@@ -21,7 +23,7 @@ def plot_frames(frames: torch.Tensor, save_dir, vmin, vmax, cmap="viridis"):
         plt.close()
 
 
-def crop_frames(frames: torch.Tensor, crop_size):
+def crop_frames(frames: np.ndarray, crop_size: int) -> np.ndarray:
     height = frames.shape[-2]
     width = frames.shape[-1]
 

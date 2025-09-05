@@ -5,8 +5,8 @@ import torch.nn as nn
 
 from nowcastnet.model.modules.evolution.evolution_network import EvolutionNetwork
 from nowcastnet.model.modules.evolution.evolution_operator import EvolutionOperator
-from nowcastnet.model.modules.generation.generative_encoder import GenerativeEncoder
 from nowcastnet.model.modules.generation.generative_decoder import GenerativeDecoder
+from nowcastnet.model.modules.generation.generative_encoder import GenerativeEncoder
 from nowcastnet.model.modules.generation.noise_projector import NoiseProjector
 
 

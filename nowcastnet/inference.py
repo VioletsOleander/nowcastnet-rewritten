@@ -2,28 +2,36 @@ import argparse
 import logging
 import os
 
+import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-import numpy as np
 
-from nowcastnet.model.nowcastnet import NowcastNet
 from nowcastnet.datasets.factory import dataset_provider
-from nowcastnet.utils.visualizing import plot_frames, crop_frames
+from nowcastnet.model.nowcastnet import NowcastNet
+from nowcastnet.utils.logging import log_configs, setup_logging
 from nowcastnet.utils.parsing import setup_parser
-from nowcastnet.utils.logging import setup_logging, log_configs
+from nowcastnet.utils.visualizing import crop_frames, plot_frames
 
 
 def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
-    # positional arguments
+    # positional arguments (required if config_path is not provided)
     parser.add_argument(
-        "weights_path", type=str, help="path of the pretrained model weights"
+        "weights_path",
+        type=str,
+        nargs="?",
+        default=None,
+        help="path of the pre-trained model weights",
     )
     parser.add_argument(
-        "results_path", type=str, help="path to store the generated results"
+        "results_path",
+        type=str,
+        nargs="?",
+        default=None,
+        help="path to store the generated results",
     )
 
-    # model configuration arguments
+    # model configuration arguments (optional)
     model_group = parser.add_argument_group("model configuration arguments")
     model_group.add_argument(
         "--generator_base_channels",
@@ -35,16 +43,16 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         "--device", type=str, default="cpu", help="device to run the model"
     )
 
-    # other configuration arguments
+    # other configuration arguments (optional)
     other_group = parser.add_argument_group("other configuration arguments")
     other_group.add_argument(
         "--save_original_data",
         type=bool,
         default=True,
-        help="whether to save the inferenced original numpy ndarray data",
+        help="whether to save the inferenced original numpy ndarray data of the inference result",
     )
     other_group.add_argument(
-        "--path_to_log",
+        "--log_path",
         type=str,
         default="inference.log",
         help="path to store the log file",
@@ -57,8 +65,8 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
 
 def prepare_configs(configs: argparse.Namespace) -> argparse.Namespace:
-    configs.pred_length = configs.total_length - configs.input_length
-    configs.gen_decoder_input_channels = configs.generator_base_channels * 10
+    configs.total_length = configs.input_length + configs.pred_length
+    configs.generator_decoder_input_channels = configs.generator_base_channels * 10
 
     return configs
 
@@ -85,11 +93,6 @@ def inference(model: nn.Module, dataloader: DataLoader, configs: argparse.Namesp
             configs.image_width // 32,
         ).astype(np.float32)
         noise = torch.from_numpy(noise).to(device=configs.device)
-        # noise = torch.randn(
-        #     configs.batch_size,
-        #     configs.generator_base_channels,
-        #     configs.image_height//32,
-        #     configs.image_width//32).to(device=configs.device)
 
         with torch.no_grad():
             predicted_frames = model(observed_frames, noise)
