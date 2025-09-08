@@ -1,5 +1,3 @@
-from argparse import Namespace
-
 import torch
 import torch.nn as nn
 
@@ -8,10 +6,11 @@ from nowcastnet.model.modules.evolution.evolution_operator import EvolutionOpera
 from nowcastnet.model.modules.generation.generative_decoder import GenerativeDecoder
 from nowcastnet.model.modules.generation.generative_encoder import GenerativeEncoder
 from nowcastnet.model.modules.generation.noise_projector import NoiseProjector
+from nowcastnet.utils.parsing import InferenceConfig
 
 
 class NowcastNet(nn.Module):
-    def __init__(self, configs: Namespace):
+    def __init__(self, configs: InferenceConfig):
         super().__init__()
 
         self.configs = configs
@@ -33,7 +32,7 @@ class NowcastNet(nn.Module):
         )
 
         self.gen_dec = GenerativeDecoder(
-            in_channels=configs.gen_decoder_input_channels,
+            in_channels=configs.generator_decoder_input_channels,
             base_channels=configs.generator_base_channels,
             evo_channels=configs.pred_length,
             out_channels=configs.pred_length,
