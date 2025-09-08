@@ -16,6 +16,7 @@ artifacts/
 **/configs/*.toml
 *.sarif
 *.json
+*.log
 
 # not ignored
 !**/configs/*.example.toml

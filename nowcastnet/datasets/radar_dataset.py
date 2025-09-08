@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import cv2 as cv
 import numpy as np
@@ -16,25 +17,25 @@ class RadarDataset(Dataset):
         # ensure the frames' height and width are limited
         assert self.image_height <= 1024 and self.image_width <= 1024
 
-        self.total_length = dataset_config["total_length"]
+        self.pred_length = dataset_config["pred_length"]
         self.input_length = dataset_config["input_length"]
-        self.dataset_path = dataset_config["dataset_path"]
+        self.total_length = self.input_length + self.pred_length
+
+        self.dataset_path = Path(dataset_config["dataset_path"])
 
         self.sample_list = self._build_sample_list()
 
     def _build_sample_list(self):
         # each sample in sample_list is a list containing paths to its revelent frames
         sample_list = []
-        sample_dirs = os.listdir(self.dataset_path)
-        for sample_dir in sample_dirs:
-            # each case_dir contains 29 frames
-            frame_paths = [
-                os.path.join(
-                    self.dataset_path, sample_dir, f"{sample_dir}-{str(i).zfill(2)}.png"
-                )
-                for i in range(29)
-            ]
-            sample_list.append(frame_paths)
+        for sample_dir in self.dataset_path.iterdir():
+            if sample_dir.is_dir():
+                # each case_dir contains 29 frames
+                frame_paths = [
+                    sample_dir / f"{sample_dir.name}-{str(i).zfill(2)}.png"
+                    for i in range(29)
+                ]
+                sample_list.append(frame_paths)
 
         return sample_list
 

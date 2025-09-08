@@ -1,6 +1,7 @@
 import json
 import logging
-import argparse
+
+from nowcastnet.utils.parsing import InferenceConfig
 
 
 def setup_logging(log_file_path):
@@ -14,6 +15,6 @@ def setup_logging(log_file_path):
     )
 
 
-def log_configs(args: argparse.Namespace):
-    configs_dict = vars(args)
+def log_configs(configs: InferenceConfig):
+    configs_dict = vars(configs)
     logging.info(f"Configurations:\n{json.dumps(configs_dict, indent=4)}")

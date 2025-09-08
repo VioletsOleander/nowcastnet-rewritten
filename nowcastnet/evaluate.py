@@ -1,28 +1,36 @@
-import os
 import argparse
 import logging
+import os
 
 import numpy as np
 from matplotlib.colors import Normalize
 
 from nowcastnet.datasets.factory import dataset_provider
+from nowcastnet.evaluation.metrics import compute_csi, compute_csi_neighbor, compute_psd
+from nowcastnet.utils.logging import log_configs, setup_logging
 from nowcastnet.utils.parsing import setup_parser
-from nowcastnet.utils.logging import setup_logging, log_configs
 from nowcastnet.utils.preprocessing import preprocess
 from nowcastnet.utils.visualizing import crop_frames, plot_line
-from nowcastnet.evaluation.metrics import compute_csi, compute_csi_neighbor, compute_psd
 
 
 def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
-    # positional arguments
+    # positional arguments (required if config_path is not provided)
     parser.add_argument(
-        "infer_results_path", type=str, help="path of the inference results"
+        "infer_results_path",
+        type=str,
+        nargs="?",
+        default=None,
+        help="path of the inference results",
     )
     parser.add_argument(
-        "eval_results_path", type=str, help="path to store the evaluation results"
+        "eval_results_path",
+        type=str,
+        nargs="?",
+        default=None,
+        help="path to store the evaluation results",
     )
 
-    # evaluation configuration arguments
+    # evaluation configuration arguments (optional)
     evaluation_group = parser.add_argument_group("evaluation configuration arguments")
     evaluation_group.add_argument(
         "--csi_threshold",
@@ -37,7 +45,7 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         help="kernel size of maxpooling in CSI_neighbor calculation",
     )
 
-    # other configuration arguments
+    # other configuration arguments (optional)
     other_group = parser.add_argument_group("other configuration arguments")
     other_group.add_argument(
         "--preprocessed",
@@ -45,7 +53,7 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         help="whether the dataset is preprocessed, if not, the dataset will be preprocessed",
     )
     other_group.add_argument(
-        "--path_to_preprocessed",
+        "--preprocessed_dataset_path",
         type=str,
         help="path to store the preprocessed dataset, only used when preprocessed is False",
     )
@@ -53,10 +61,10 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         "--save_original_data",
         type=bool,
         default=True,
-        help="whether to save the preprocessed original numpy ndarray data",
+        help="whether to save the preprocessed original numpy ndarray data of the evaluation result",
     )
     other_group.add_argument(
-        "--path_to_log",
+        "--log_path",
         type=str,
         default="evaluate.log",
         help="path to store the log file",
@@ -66,7 +74,7 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
 
 def prepare_configs(configs: argparse.Namespace) -> argparse.Namespace:
-    configs.pred_length = configs.total_length - configs.input_length
+    configs.total_length = configs.input_length + configs.pred_length
 
     return configs
 

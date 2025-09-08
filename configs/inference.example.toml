@@ -1,0 +1,27 @@
+# Positional Arguments (Required)
+# please replace the following paths with your own paths
+dataset_path = "/project/data/dataset/mrms/figure"   # path of the dataset
+weights_path = "/project/data/weights/nowcastnet.pt" # path of the pre-trained weights
+results_path = "/project/data/results/"              # path to store the generated results
+
+# Data Information Arguments (Optional)
+dataset_name = "radar" # name of target dataset
+input_length = 9       # number of input frames
+pred_length = 20       # number of frames to predict
+image_height = 512     # height of input frames
+image_width = 512      # width of input frames
+
+# Data Loading and Processing Arguments (Optional)
+cpu_workers = 0      # num_workers for pytorch DataLoader
+case_type = "normal" # different case_type corresponds to different data processing methods for generated frames
+crop_size = 384      # size of the cropped predictions, -1 means do not crop the predictions
+batch_size = 1       # size of minibatch
+
+# Model Configuration Arguments (Optional)
+generator_base_channels = 32 # number of generator base channels
+device = "cpu"               # device to run the model
+
+# Other configuration arguments (Optional)
+save_original_data = true  # whether to save the original numpy ndarray data of the inference result
+log_path = "inference.log" # path to store the log file
+seed = 42                  # random seed for reproducibility

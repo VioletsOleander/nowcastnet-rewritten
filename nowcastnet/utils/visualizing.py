@@ -1,27 +1,30 @@
 import os
+from pathlib import Path
 
 import matplotlib.pyplot as plt
-import torch
+import numpy as np
 
 
-def plot_frames(frames: torch.Tensor, save_dir, vmin, vmax, cmap="viridis"):
+def plot_frames(
+    frames: np.ndarray, save_dir: Path, vmin: float, vmax: float, cmap="viridis"
+):
     for frame_idx, frame in enumerate(frames):
         _ = plt.figure()
         ax = plt.axes()
 
         ax.set_axis_off()
 
-        alpha = frame.clone()
+        alpha = frame.copy()
         alpha[alpha < 1] = 0
         alpha[alpha > 1] = 1
 
         ax.imshow(frame, alpha=alpha, vmin=vmin, vmax=vmax, cmap=cmap)
 
-        plt.savefig(os.path.join(save_dir, f"frame-{frame_idx}.png"), dpi=300)
+        plt.savefig(save_dir / f"frame-{frame_idx}.png", dpi=300)
         plt.close()
 
 
-def crop_frames(frames: torch.Tensor, crop_size):
+def crop_frames(frames: np.ndarray, crop_size: int) -> np.ndarray:
     height = frames.shape[-2]
     width = frames.shape[-1]
 
