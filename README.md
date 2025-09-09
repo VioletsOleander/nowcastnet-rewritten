@@ -16,23 +16,23 @@ This project is a personal reimplementation of the NowcastNet inference framewor
 
 2. Install the dependencies (pick one of the following methods):
 
-- Sync dependencies using [uv](https://github.com/astral-sh/uv):
+    - Sync dependencies using [uv](https://github.com/astral-sh/uv):
 
-    ```bash
-    uv sync
-    ```
+        ```bash
+        uv sync
+        ```
 
-- Make sure `python>=3.10,<3.11`, and either install from PyPI:
+    - Make sure `python>=3.10,<3.11`, and either install from PyPI:
 
-    ```bash
-    pip install -U nowcastnet-rewritten
-    ```
+        ```bash
+        pip install -U nowcastnet-rewritten
+        ```
 
-    or install from local:
+        or install from local:
 
-    ```bash
-    pip install .
-    ```
+        ```bash
+        pip install .
+        ```
 
 **Notes:**
 
