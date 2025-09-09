@@ -52,7 +52,7 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         "--config_path",
         type=str,
         default=defaults.config_path,
-        help="path of the config file, the command line arguments have higher priority than config file",
+        help="path of the config file, if provided, other command line arguments will be ignored",
     )
     other_group.add_argument(
         "--save_original_data",

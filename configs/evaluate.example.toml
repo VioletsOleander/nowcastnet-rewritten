@@ -1,0 +1,28 @@
+# Positional Arguments (Required)
+# please replace the following paths with your own paths
+dataset_path = "/project/data/datasets/mrms/figure"     # path of the dataset
+infer_results_path = "/project/data/results/"           # path of the inference results
+eval_results_path = "/project/data/evaluation-results/" # path to store the evaluation results
+
+# Data Information Arguments (Optional)
+dataset_name = "radar" # name of target dataset
+input_length = 9       # number of input frames
+pred_length = 20       # number of frames to predict
+image_height = 512     # height of input frames
+image_width = 512      # width of input frames
+
+# Data Loading and Processing Arguments (Optional)
+cpu_workers = 0      # num_workers for pytorch DataLoader
+case_type = "normal" # different case_type corresponds to different data processing methods for generated frames
+crop_size = 384      # size of the cropped predictions, -1 means do not crop the predictions
+batch_size = 1       # size of minibatch
+
+# Evaluation Configuration Arguments (Optional)
+csi_threshold = 16      # precipitation rate threshold for CSI calculation
+pooling_kernel_size = 2 # kernel size for max pooling in CSI_neighbor calculation
+
+# Ohter Configuration Arguments (Optional)
+preprocessed = false                                               # whether the dataset is preprocessed, if not, the dataset will be preprocessed
+preprocessed_dataset_path = "/project/data/preprocessed-datasets/" # path to store the preprocessed dataset, only used when preprocess is true
+save_original_data = true                                          # whether to save the original numpy ndarray data of the evaluation result
+log_path = "evaluate.log"                                          # path to store the log file
