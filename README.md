@@ -14,7 +14,15 @@ This project is a personal reimplementation of the NowcastNet inference framewor
     git clone https://github.com/VioletsOleander/nowcastnet-rewritten.git
     ```
 
-2. Install the package from PyPI (**make sure `python>=3.10,<3.11`**):
+2. Install the dependencies (pick one of the following methods):
+
+- Sync dependencies using [uv](https://github.com/astral-sh/uv):
+
+    ```bash
+    uv sync
+    ```
+
+- Make sure `python>=3.10,<3.11`, and either install from PyPI:
 
     ```bash
     pip install -U nowcastnet-rewritten
@@ -28,30 +36,40 @@ This project is a personal reimplementation of the NowcastNet inference framewor
 
 **Notes:**
 
+- [uv](https://github.com/astral-sh/uv) is recommended for managing dependencies for full reproducibility.
 - You may need to implement your own code to read the dataset. Sample code for reading the radar dataset is provided in the `datasets` directory.
 - To ensure compatibility with this reimplementation's architecture, weights have been modified and are available for download from [Hugging Face](https://huggingface.co/VioletsOleander/nowcastnet-rewritten).
 
 ## 3. Usage
 
-To start inference, run `inference.py` with required arguments.
+To perform inference, run `inference.py` with the required arguments.
 
-To get an overview of the arguments, start with the basic command:
+To view all available arguments, use:
 
 ```bash
 python inference.py -h
 ```
 
-Here is an example shell script `do_inference.sh` to streamline the process. You can adjust it accordingly:
+It is recommended to use the `--config_path` option to specify the configuration file, for example:
 
 ```bash
-#!/bin/bash
+python inference.py --config_path ../configs/inference.toml
+```
+
+An example configuration file is provided in the `configs/` directory.
+
+You can also specify options directly from the command line, for example:
+
+```bash
 python inference.py \
     --case_type normal \
     --device cuda:0 \
-    "path_to_weights" \
-    "path_to_data" \
-    "path_to_result" \
+    path_to_weights \
+    path_to_data \
+    path_to_result
 ```
+
+> **Note:** If `--config_path` is specified, other command line options will be ignored.
 
 ## 4. Example Inference Result
 
