@@ -48,7 +48,7 @@ class InferenceConfig(CommonConfig):
 
 @dataclass
 class EvaluationConfig(CommonConfig):
-    # potisitional arguments
+    # positional arguments
     infer_results_path: str | None = None
     eval_results_path: str | None = None
 
