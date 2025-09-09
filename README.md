@@ -22,7 +22,7 @@ This project is a personal reimplementation of the NowcastNet inference framewor
     uv sync
     ```
 
-- Make sure `python>=3.10,<3.11`, and either install the from PyPI:
+- Make sure `python>=3.10,<3.11`, and either install from PyPI:
 
     ```bash
     pip install -U nowcastnet-rewritten
