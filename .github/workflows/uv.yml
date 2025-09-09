@@ -21,25 +21,35 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
-
-      - name: Cache dependencies
+      
+      - name: Cache uv wheel cache
         uses: actions/cache@v4
         with:
-          path: |
-            .venv
-            ~/.cache/uv
-          # The cache key is based on: lock file contents + Python version
+          path: ~/.cache/uv
+          # The cache key is based on: lock file contents
           # When pyproject.toml or uv.lock changes, a new cache will be created
-          key: ${{ runner.os }}-uv-${{ hashFiles('uv.lock') }}-${{ hashFiles('.python-version') }}
+          key: ${{ runner.os }}-uv-wheels-${{ hashFiles('uv.lock') }}
           # If an exact key match is not found, the most recently restored cache will be used
           restore-keys: |
-            ${{ runner.os }}-uv-
+            ${{ runner.os }}-uv-wheels-
 
+      - name: Cache virtual environment
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          # The cache key is based on: lock file contents + Python version
+          # When pyproject.toml or uv.lock or .python-version changes, a new cache will be created
+          key: ${{ runner.os }}-venv-${{ hashFiles('uv.lock') }}-${{ hashFiles('.python-version') }}
+          # If an exact key match is not found, the most recently restored cache will be used
+          restore-keys: |
+            ${{ runner.os }}-venv-
+      
       - name: Install the project
         run: uv sync --locked
 
       - name: Run ruff
         run: uvx ruff check
+        
 
       - name: Run ty
         run: uvx ty check
