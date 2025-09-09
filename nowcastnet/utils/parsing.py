@@ -48,10 +48,24 @@ class InferenceConfig(CommonConfig):
 
 @dataclass
 class EvaluationConfig(CommonConfig):
+    # potisitional arguments
     infer_results_path: str | None = None
     eval_results_path: str | None = None
-    csi_thresholds: int = 16
+
+    # evaluation configuration arguments
+    csi_threshold: int = 16
     pooling_kernel_size: int = 2
+
+    # other configuration arguments
+    config_path: str | None = None
+    preprocessed: bool = False
+    preprocessed_dataset_path: str | None = None
+    save_original_data: bool = True
+    log_path: str = "evaluation.log"
+
+    # configurations derived from other arguments
+    total_length: int | None = None
+    generator_decoder_input_channels: int | None = None
 
 
 def setup_parser(description) -> argparse.ArgumentParser:

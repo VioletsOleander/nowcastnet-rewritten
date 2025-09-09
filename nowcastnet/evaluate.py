@@ -1,6 +1,10 @@
+# Evaluation is still in experimental stage and may contain bugs.
+
 import argparse
 import logging
 import os
+from pathlib import Path
+from typing import cast
 
 import numpy as np
 from matplotlib.colors import Normalize
@@ -8,25 +12,27 @@ from matplotlib.colors import Normalize
 from nowcastnet.datasets.factory import dataset_provider
 from nowcastnet.evaluation.metrics import compute_csi, compute_csi_neighbor, compute_psd
 from nowcastnet.utils.logging import log_configs, setup_logging
-from nowcastnet.utils.parsing import setup_parser
+from nowcastnet.utils.parsing import EvaluationConfig, parse_config_file, setup_parser
 from nowcastnet.utils.preprocessing import preprocess
 from nowcastnet.utils.visualizing import crop_frames, plot_line
 
 
 def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
+    defaults = EvaluationConfig()
+
     # positional arguments (required if config_path is not provided)
     parser.add_argument(
         "infer_results_path",
         type=str,
         nargs="?",
-        default=None,
+        default=defaults.infer_results_path,
         help="path of the inference results",
     )
     parser.add_argument(
         "eval_results_path",
         type=str,
         nargs="?",
-        default=None,
+        default=defaults.eval_results_path,
         help="path to store the evaluation results",
     )
 
@@ -35,18 +41,24 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     evaluation_group.add_argument(
         "--csi_threshold",
         type=int,
-        default=16,
+        default=defaults.csi_threshold,
         help="precipitation rate threshold for CSI calculation",
     )
     evaluation_group.add_argument(
         "--pooling_kernel_size",
         type=int,
-        default=2,
+        default=defaults.pooling_kernel_size,
         help="kernel size of maxpooling in CSI_neighbor calculation",
     )
 
     # other configuration arguments (optional)
     other_group = parser.add_argument_group("other configuration arguments")
+    other_group.add_argument(
+        "--config_path",
+        type=str,
+        default=defaults.config_path,
+        help="path to the config file, if provided, other command line arguments will be ignored",
+    )
     other_group.add_argument(
         "--preprocessed",
         action="store_true",
@@ -55,25 +67,56 @@ def refine_parser(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     other_group.add_argument(
         "--preprocessed_dataset_path",
         type=str,
+        default=defaults.preprocessed_dataset_path,
         help="path to store the preprocessed dataset, only used when preprocessed is False",
     )
     other_group.add_argument(
         "--save_original_data",
         type=bool,
-        default=True,
+        default=defaults.save_original_data,
         help="whether to save the preprocessed original numpy ndarray data of the evaluation result",
     )
     other_group.add_argument(
         "--log_path",
         type=str,
-        default="evaluate.log",
+        default=defaults.log_path,
         help="path to store the log file",
     )
 
     return parser
 
 
-def prepare_configs(configs: argparse.Namespace) -> argparse.Namespace:
+def prepare_configs(parser: argparse.ArgumentParser) -> EvaluationConfig:
+    # if config_path is provided, parse the config file
+    # else use the command line arguments
+
+    args = parser.parse_args()
+    configs = EvaluationConfig()
+
+    if args.config_path is not None:
+        configs_from_file = parse_config_file(args.config_path)
+        for key, value in configs_from_file.items():
+            if not hasattr(configs, key):
+                raise ValueError(f"Unknown config key: {key}")
+            setattr(configs, key, value)
+    else:
+        for key, value in vars(args).items():
+            setattr(configs, key, value)
+
+    assert (
+        configs.infer_results_path is not None
+    ), "infer_results_path should be provided."
+    assert (
+        configs.eval_results_path is not None
+    ), "eval_results_path should be provided."
+
+    if configs.preprocessed:
+        assert configs.dataset_path is not None, "dataset_path should be provided."
+    else:
+        assert (
+            configs.preprocessed_dataset_path is not None
+        ), "preprocessed_dataset_path should be provided when preprocessed is False."
+
     configs.total_length = configs.input_length + configs.pred_length
 
     return configs
@@ -87,10 +130,11 @@ def freq_to_wavelength(freq):
     return wavelength / 1000
 
 
-def evaluate(configs: argparse.Namespace):
+def evaluate(configs: EvaluationConfig):
     logging.info("Evaluation started")
 
-    os.makedirs(configs.eval_results_path, exist_ok=True)
+    eval_results_path = Path(cast(str, configs.eval_results_path))
+    eval_results_path.mkdir(parents=True, exist_ok=True)
 
     predicted_sample_dirs = sorted(os.listdir(configs.infer_results_path))
     truth_sample_dirs = sorted(os.listdir(configs.dataset_path))
@@ -103,13 +147,13 @@ def evaluate(configs: argparse.Namespace):
         logging.info(f"Sample: {sample_idx + 1}/{len(predicted_sample_dirs)}")
 
         # load predicted and truth frames
-        predicted_sample_dir = os.path.join(
-            configs.infer_results_path, predicted_sample_dir
+        predicted_sample_dir = (
+            Path(cast(str, configs.infer_results_path)) / predicted_sample_dir
         )
-        truth_sample_dir = os.path.join(configs.dataset_path, truth_sample_dir)
+        truth_sample_dir = Path(cast(str, configs.dataset_path)) / truth_sample_dir
 
-        predicted_frames = np.load(os.path.join(predicted_sample_dir, "frames.npy"))
-        truth_frames = np.load(os.path.join(truth_sample_dir, "future", "frames.npy"))
+        predicted_frames = np.load(predicted_sample_dir / "frames.npy")
+        truth_frames = np.load(truth_sample_dir / "future" / "frames.npy")
 
         # cropping
         predicted_frames = crop_frames(
@@ -185,14 +229,8 @@ def evaluate(configs: argparse.Namespace):
             f"CSI and CSIN plots for sample {sample_idx} saved to {configs.eval_results_path}"
         )
 
-        np.save(
-            os.path.join(configs.eval_results_path, f"sample{sample_idx}-csi.npy"),
-            csi_list,
-        )
-        np.save(
-            os.path.join(configs.eval_results_path, f"sample{sample_idx}-csin.npy"),
-            csin_list,
-        )
+        np.save(eval_results_path / f"sample{sample_idx}-csi.npy", csi_list)
+        np.save(eval_results_path / f"sample{sample_idx}-csin.npy", csin_list)
         logging.info(
             f"CSI and CSIN arrays for sample {sample_idx} saved to {configs.eval_results_path}"
         )
@@ -241,8 +279,8 @@ def evaluate(configs: argparse.Namespace):
     )
     logging.info(f"Average CSI and CSIN plots saved to {configs.eval_results_path}")
 
-    np.save(os.path.join(configs.eval_results_path, "avg_csi.npy"), avgcsi_list)
-    np.save(os.path.join(configs.eval_results_path, "avg_csin.npy"), avgcsin_list)
+    np.save(eval_results_path / "avg_csi.npy", avgcsi_list)
+    np.save(eval_results_path / "avg_csin.npy", avgcsin_list)
     logging.info(f"Average CSI and CSIN arrays saved to {configs.eval_results_path}")
 
 
@@ -250,10 +288,9 @@ if __name__ == "__main__":
     parser = refine_parser(
         setup_parser(description="Run NowcastNet evaluation or dataset preprocessing")
     )
-    args = parser.parse_args()
-    configs = prepare_configs(args)
+    configs = prepare_configs(parser)
 
-    setup_logging(configs.path_to_log)
+    setup_logging(configs.log_path)
     log_configs(configs)
 
     if not configs.preprocessed:
@@ -261,6 +298,6 @@ if __name__ == "__main__":
         logging.info(f"DataLoader created from {configs.dataset_path}")
 
         preprocess(dataloader, configs)
-        configs.dataset_path = configs.path_to_preprocessed
+        configs.dataset_path = configs.preprocessed_dataset_path
 
     evaluate(configs)
