@@ -34,11 +34,11 @@ This project is a personal reimplementation of the NowcastNet inference framewor
         pip install .
         ```
 
-**Notes:**
-
-- [uv](https://github.com/astral-sh/uv) is recommended for managing dependencies for full reproducibility.
-- You may need to implement your own code to read the dataset. Sample code for reading the radar dataset is provided in the `datasets` directory.
-- To ensure compatibility with this reimplementation's architecture, weights have been modified and are available for download from [Hugging Face](https://huggingface.co/VioletsOleander/nowcastnet-rewritten).
+> **Notes:**
+>
+> - [uv](https://github.com/astral-sh/uv) is recommended for managing dependencies for full reproducibility.
+> - You may need to implement your own code to read the dataset. Sample code for reading the radar dataset is provided in the `datasets` directory.
+> - To ensure compatibility with this reimplementation's architecture, weights have been modified and are available for download from [Hugging Face](https://huggingface.co/VioletsOleander/nowcastnet-rewritten).
 
 ## 3. Usage
 
