@@ -15,7 +15,7 @@
 * style: format code with uv format ([55fffce](https://github.com/VioletsOleander/nowcastnet-rewritten/commit/55fffce))
 * style: remove unused imports ([40a2243](https://github.com/VioletsOleander/nowcastnet-rewritten/commit/40a2243))
 
-## <small>0.0.2.post1 (2025-07-08)<small>
+## <small>0.0.2.post1 (2025-07-08)</small>
 
 * feat: add onnx matmul modification script (#5) ([b3ab5e0](https://github.com/VioletsOleander/nowcastnet-rewritten/commit/b3ab5e0)), closes [#5](https://github.com/VioletsOleander/nowcastnet-rewritten/issues/5)
 * feat: add onnx model inspection script (#4) ([b53c04b](https://github.com/VioletsOleander/nowcastnet-rewritten/commit/b53c04b)), closes [#4](https://github.com/VioletsOleander/nowcastnet-rewritten/issues/4)
