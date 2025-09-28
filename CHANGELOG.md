@@ -1,3 +1,9 @@
+## <small>0.1.1 (2025-09-28)</small>
+
+* chore: restrict pysteps version (#26) ([e6a1352](https://github.com/VioletsOleander/nowcastnet-rewritten/commit/e6a1352)), closes [#26](https://github.com/VioletsOleander/nowcastnet-rewritten/issues/26)
+* docs: update README.md (#25) ([8ac0302](https://github.com/VioletsOleander/nowcastnet-rewritten/commit/8ac0302)), closes [#25](https://github.com/VioletsOleander/nowcastnet-rewritten/issues/25)
+
+
 ## 0.1.0 (2025-09-10)
 
 * docs: update README.md ([9ff1405](https://github.com/VioletsOleander/nowcastnet-rewritten/commit/9ff1405))
