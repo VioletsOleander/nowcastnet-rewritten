@@ -156,14 +156,14 @@ wheels = [
 
 [[package]]
 name = "jsonschema-specifications"
-version = "2025.4.1"
+version = "2025.9.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "referencing" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bf/ce/46fbd9c8119cfc3581ee5643ea49464d168028cfb5caff5fc0596d0cf914/jsonschema_specifications-2025.4.1.tar.gz", hash = "sha256:630159c9f4dbea161a6a2205c3011cc4f18ff381b189fff48bb39b9bf26ae608", size = 15513, upload-time = "2025-04-23T12:34:07.418Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/74/a633ee74eb36c44aa6d1095e7cc5569bebf04342ee146178e2d36600708b/jsonschema_specifications-2025.9.1.tar.gz", hash = "sha256:b540987f239e745613c7a9176f3edb72b832a4ac465cf02712288397832b5e8d", size = 32855, upload-time = "2025-09-08T01:34:59.186Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/01/0e/b27cdbaccf30b890c40ed1da9fd4a3593a5cf94dae54fb34f8a4b74fcd3f/jsonschema_specifications-2025.4.1-py3-none-any.whl", hash = "sha256:4653bffbd6584f7de83a67e0d620ef16900b390ddc7939d56684d6c81e33f1af", size = 18437, upload-time = "2025-04-23T12:34:05.422Z" },
+    { url = "https://files.pythonhosted.org/packages/41/45/1a4ed80516f02155c51f51e8cedb3c1902296743db0bbc66608a0db2814f/jsonschema_specifications-2025.9.1-py3-none-any.whl", hash = "sha256:98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe", size = 18437, upload-time = "2025-09-08T01:34:57.871Z" },
 ]
 
 [[package]]
@@ -273,7 +273,7 @@ wheels = [
 
 [[package]]
 name = "nowcastnet-rewritten"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },
@@ -298,7 +298,7 @@ requires-dist = [
     { name = "onnx", marker = "extra == 'full'", specifier = ">=1.18.0" },
     { name = "onnxruntime", marker = "extra == 'full'", specifier = ">=1.22.0" },
     { name = "opencv-python", specifier = ">=4.11.0.86" },
-    { name = "pysteps", specifier = ">=1.14.0" },
+    { name = "pysteps", specifier = "<=1.18.0" },
     { name = "scikit-learn", specifier = ">=1.6.1" },
     { name = "tomlkit", specifier = ">=0.13.2" },
     { name = "torch", specifier = ">=2.6.0" },
@@ -577,7 +577,7 @@ wheels = [
 
 [[package]]
 name = "pysteps"
-version = "1.18.1"
+version = "1.18.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jsmin" },
@@ -586,7 +586,7 @@ dependencies = [
     { name = "numpy" },
     { name = "scipy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/db/8d/87abcf4e3d3c7ee34e62c3ac73e029e05454a926070bc6eada90233a85d0/pysteps-1.18.1.tar.gz", hash = "sha256:7760df2af412898c52bd9c618243bf296a8657e90bb3438617b6935b6f4a67c6", size = 619923, upload-time = "2025-07-11T05:56:05.109Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d2/8f/561c44b2ee8058042b7326e9d0cb04f88be6c81a98ce50ac9e9ecce3604c/pysteps-1.18.0.tar.gz", hash = "sha256:16aa9206472e822221fead81bb148c580c90d86d9bd788cec3625bb2b7600da7", size = 620208, upload-time = "2025-06-16T20:32:09.18Z" }
 
 [[package]]
 name = "python-dateutil"
